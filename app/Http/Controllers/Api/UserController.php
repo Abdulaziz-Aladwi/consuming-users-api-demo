@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
-       return UserResource::collection($this->userDataService->get($request->get('page', 1)));  
+       return UserResource::collection($this->userDataService->get());  
     }
 
     public function search(Request $request)
