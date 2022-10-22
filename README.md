@@ -13,8 +13,8 @@ And two endpoints to fetch these data and search form them.
 
 1- Configure database credentials in .env <br/>
 2- Migrate database files <br/>
-2- Initialize API secret which you will send in request headers with key ##api-token to be able to access the APIs. <br/>
-3- Composer install
+3- Initialize API secret which you will send in request headers with key ##api-token to be able to access the APIs. <br/>
+4- Composer install
 
 ## Command to consume users:
 
@@ -25,4 +25,4 @@ php artisan consume:users
 ## EndPoints:
 
 1- Fetch Users Endpoint {{baseUri}}/api/users/list <br/>
-2- Search Users Endpoint {{baseUri}}/api/users/search with query parameters (firstName, LastName, Email)
+2- Search Users Endpoint {{baseUri}}/api/users/search with query parameters (firstName, lastName, email)
