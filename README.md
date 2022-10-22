@@ -1,7 +1,7 @@
 ## About Application
 
-Simple Demo that have a command which consume users from external APIs and save them to Database.
-And two endpoints to fetch these and search form them.
+Simple Demo that have a command which consumes users from external APIs and save them to Database.
+And two endpoints to fetch these data and search form them.
 
 ## Prerequisites
 
@@ -11,14 +11,17 @@ And two endpoints to fetch these and search form them.
 
 ## Installation
 
-1-configure database credentials in .env
-2-Initialize API secret which you will send in request headers with key ##api-token to be able to access the APIs.
+1-configure database credentials in .env <br/>
+2-Initialize API secret which you will send in request headers with key ##api-token to be able to access the APIs. <br/>
 3-composer install
 
-## EndPoints you will user
-1- Command to fetch data from APIs "php artisan consume:users"
+## Command to consume users:
 
-## EndPoints you will user
+```bash
+php artisan consume:users
+```
 
-1-Fetch Users Endpoint {{baseUri}}/api/users/list
+## EndPoints:
+
+1-Fetch Users Endpoint {{baseUri}}/api/users/list <br/>
 2- Search Users Endpoint {{baseUri}}/api/users/search with query parameters (firstName, LastName, Email)
