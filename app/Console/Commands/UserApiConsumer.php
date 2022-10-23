@@ -6,6 +6,7 @@ use App\Constants\UserEndpoints;
 use App\Services\UserDataService;
 use App\Services\UsersApiClientService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -68,8 +69,12 @@ class UserApiConsumer extends Command
 
             $usersCollection = $users1->merge($users2);
 
-            foreach ($usersCollection->chunk($batchSize) as $index => $users) {
+            # Will be ued to check for duplicated users
+            $existingEmails = DB::table('users')->pluck('email')->toArray();
 
+            foreach ($usersCollection->chunk($batchSize) as $index => $users) {
+                
+                $users = $this->removeDuplicatedUsersIfExist($users, $existingEmails);
                 DB::table('users')->insert($users->toArray());
 
                 $this->info("Data for Batch# {$index} Saved Successfully");
@@ -78,8 +83,23 @@ class UserApiConsumer extends Command
             $this->info('Succeeded');
 
         } catch(\Exception $exception) {
-            $this->error('Something went wrong, please check logs.');
             Log::error($exception->getMessage());
+            $this->error('Something went wrong, please check logs.');
         }
+    }
+
+    /**
+     * Remove duplicated users from before saving in database
+     *
+     * @param Collection $users
+     * @param [type] $existingEmails
+     */
+    private function removeDuplicatedUsersIfExist($users, $existingEmails): Collection
+    {
+        foreach ($users as $index => $user) {
+            in_array($user['email'], $existingEmails) ? $users->forget($index) : false;
+        }
+
+        return $users;
     }
 }
