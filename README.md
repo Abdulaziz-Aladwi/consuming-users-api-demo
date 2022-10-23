@@ -12,9 +12,9 @@ And two endpoints to fetch these data and search form them.
 ## Installation
 
 1- Configure database credentials in .env <br/>
-2- Migrate database files <br/>
-3- Initialize API secret which you will send in request headers with key ##api-token to be able to access the APIs. <br/>
-4- Composer install
+2- Initialize API secret which you will send in request headers with key ##api-token to be able to access the APIs. <br/>
+3- Install dependencies using composer.
+2- Migrate database files. <br/>
 
 ## Command to consume users:
 
