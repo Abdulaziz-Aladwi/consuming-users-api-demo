@@ -5,9 +5,10 @@ namespace App\Services;
 use App\Contracts\UserRepositoryInterface;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
-class UserDataService 
+class UserDataService
 {
     /** @var UserRepositoryInterface */
     private $userRepository;
@@ -23,7 +24,7 @@ class UserDataService
     /**
      * Get Users List
      */
-    public function get(): Collection
+    public function get(): Paginator
     {
         return $this->userRepository->getUsersByQueryBuilder();
     }
@@ -32,12 +33,11 @@ class UserDataService
      * Search for Users
      * 
      * @var array $criteria [firstName, lastName, email]
-     */    
-    public function search($criteria): Collection
+     */
+    public function search($criteria): Paginator
     {
         return $this->userRepository->searchByQueryBuilder($criteria);
     }
-
 
     /**
      * Prepare data from different schema to be saved properly to database
@@ -49,7 +49,7 @@ class UserDataService
         $users = json_decode($response1->getBody(), true);
         $usersCollection = collect($users);
 
-        $users = $usersCollection->map(function($user){
+        $users = $usersCollection->map(function ($user) {
             return [
                 'first_name' => $user['firstName'],
                 'last_name' => $user['lastName'],
@@ -62,12 +62,17 @@ class UserDataService
         return $users;
     }
 
+    /**
+     * Prepare data from different schema to be saved properly to database
+     *
+     * @param Response
+     */
     public function prepareDataForUsers2($response2): Collection
     {
         $users = json_decode($response2->getBody(), true);
         $usersCollection = collect($users);
 
-        $users = $usersCollection->map(function($user){
+        $users = $usersCollection->map(function ($user) {
             return [
                 'first_name' => $user['fName'],
                 'last_name' => $user['lName'],
