@@ -18,7 +18,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function getUsersByQueryBuilder()
     {
-        return DB::table($this->tableName)->paginate(self::PAGINATION_COUNT);
+        return DB::table($this->tableName)->simplePaginate(self::PAGINATION_COUNT);
     }
 
     public function getUsersByRawSql($page)
@@ -44,7 +44,7 @@ class UserRepository implements UserRepositoryInterface
             $query->where('email', "{$criteria['email']}");
          }
 
-         return $query->get();
+         return $query->simplePaginate(self::PAGINATION_COUNT);
     }     
 
     public function searchByRawSql($criteria = [])
