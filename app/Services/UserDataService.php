@@ -4,30 +4,47 @@ namespace App\Services;
 
 use App\Contracts\UserRepositoryInterface;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
-use Illuminate\Database\Eloquent\Collection;
+use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Collection;
 
 class UserDataService 
 {
-
+    /** @var UserRepositoryInterface */
     private $userRepository;
 
+    /**
+     * @param UserRepositoryInterface $userRepository
+     */
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
-    public function get()
+    /**
+     * Get Users List
+     */
+    public function get(): Collection
     {
         return $this->userRepository->getUsersByQueryBuilder();
     }
 
-    public function search($criteria)
+    /**
+     * Search for Users
+     * 
+     * @var array $criteria [firstName, lastName, email]
+     */    
+    public function search($criteria): Collection
     {
         return $this->userRepository->searchByQueryBuilder($criteria);
     }
 
-    public function prepareDataForUsers1($response1)
+
+    /**
+     * Prepare data from different schema to be saved properly to database
+     *
+     * @param Response
+     */
+    public function prepareDataForUsers1($response1): Collection
     {
         $users = json_decode($response1->getBody(), true);
         $usersCollection = collect($users);
@@ -45,7 +62,7 @@ class UserDataService
         return $users;
     }
 
-    public function prepareDataForUsers2($response2)
+    public function prepareDataForUsers2($response2): Collection
     {
         $users = json_decode($response2->getBody(), true);
         $usersCollection = collect($users);
@@ -62,20 +79,4 @@ class UserDataService
 
         return $users;
     }
-
-
-    public function prepareDataForUsers3()
-    {
-            return [
-                'first_name' => 'test',
-                'last_name' => 'test',
-                'email' => 'aa@me.com',
-                'avatar' => 'wqqrqwe',
-                'created_at' => Carbon::now(),
-            ];
-        
-
-    }
-
-  
 }
